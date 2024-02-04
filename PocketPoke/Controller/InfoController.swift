@@ -17,16 +17,20 @@ class InfoController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pokemonName: UILabel!
     @IBOutlet var pokemonImage: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         monitorNetwork()
+        loading(isLoading: true)
 
         tableView.dataSource = self
         
         if searchCheck == false {
-            pokemonName.text = name
+            pokemonName.isHidden = false
+            pokemonName.text = name.capitalized
+            
             
             if let pokeImage = pokeImage {
                 pokemonImage.image = UIImage(data: pokeImage)
@@ -45,15 +49,17 @@ class InfoController: UIViewController {
                 return
             }
             
+            if self.searchCheck == true {
+                self.handleImageProcessing(imageURL: info.image.imageURL)
+            }
+            
             for item in info.stats {
                 let statItem = Stats(name: item.stat.name, stat: item.number)
                 self.pokeStats.append(statItem)
                 
-                print("Stat name: \(item.stat.name)")
-                print("Stat number: \(item.number)")
-                
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    self.loading(isLoading: false)
                 }
             }
         }
@@ -62,9 +68,48 @@ class InfoController: UIViewController {
     func noResult() {
         
         DispatchQueue.main.async {
+            self.loading(isLoading: false)
+            self.pokemonName.isHidden = false
             self.pokemonName.text = "No Results Found..."
+            self.pokemonImage.image = UIImage(named: "no_result")
         }
         
+    }
+    
+    func loading(isLoading: Bool) {
+        if isLoading {
+            DispatchQueue.main.async {
+                self.tableView.isHidden = true
+                self.activityIndicator.isHidden = false
+                self.activityIndicator.startAnimating()
+            }
+            
+        } else {
+            DispatchQueue.main.async {
+                self.tableView.isHidden = false
+                self.activityIndicator.isHidden = true
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
+    func handleImageProcessing(imageURL: String) {
+        guard let imageURL = URL(string: imageURL) else {
+            print("No image data")
+            showAlert(message: "Couldn't load image")
+            return
+        }
+        PokemonClient.requestImageFile(url: imageURL) { data, error in
+            guard let data = data else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.pokemonName.isHidden = false
+                self.pokemonName.text = self.name.capitalized
+                self.pokemonImage.image = UIImage(data: data)
+            }
+        }
     }
 
 }

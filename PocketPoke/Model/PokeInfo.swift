@@ -9,6 +9,12 @@ import Foundation
 
 struct PokeInfo: Codable {
     let stats: [PokeStats]
+    let image: PokeImage
+    
+    enum CodingKeys: String, CodingKey {
+        case stats
+        case image = "sprites"
+    }
 }
 
 struct PokeStats: Codable {

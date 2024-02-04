@@ -38,28 +38,6 @@ class HomeController: UIViewController {
         loadListItems(requestString: requestString)
     }
     
-    func handleImageProcessing(name: String, imageURL: String, error: Error?) {
-        guard let imageURL = URL(string: imageURL) else {
-            print(error?.localizedDescription ?? "No image data")
-            showAlert(message: error?.localizedDescription ?? "")
-            return
-        }
-        PokemonClient.requestImageFile(url: imageURL) { data, error in
-            guard let data = data else {
-                return
-            }
-            
-            let item = PokeListItem(name: name, image: data)
-            self.pokeItems.append(item)
-            
-            print("items: \(self.pokeItems.count)")
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
     func loadListItems(requestString: String) {
         PokemonClient.loadPokemon(limit: requestString) { pokeList, error in
             
@@ -80,6 +58,26 @@ class HomeController: UIViewController {
                     
                     self.handleImageProcessing(name: item.name, imageURL: pokemon.image.imageURL, error: error)
                 }
+            }
+        }
+    }
+    
+    func handleImageProcessing(name: String, imageURL: String, error: Error?) {
+        guard let imageURL = URL(string: imageURL) else {
+            print(error?.localizedDescription ?? "No image data")
+            showAlert(message: error?.localizedDescription ?? "")
+            return
+        }
+        PokemonClient.requestImageFile(url: imageURL) { data, error in
+            guard let data = data else {
+                return
+            }
+            
+            let item = PokeListItem(name: name, image: data)
+            self.pokeItems.append(item)
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }
@@ -111,7 +109,7 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
         
         let pokemon = pokeItems[indexPath.row]
         
-        cell.pokemonName.text = pokemon.name
+        cell.pokemonName.text = pokemon.name.capitalized
         cell.setupImage(data: pokemon.image)
         
         return cell
@@ -126,6 +124,7 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndex = indexPath.row
+        openVibe()
         performSegue(withIdentifier: "showInfo", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -138,6 +137,7 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
             let vc = segue.destination as! InfoController
             vc.name = pokemon.name
             vc.pokeImage = pokemon.image
+            vc.searchCheck = false
         case "showSearch":
             let vc = segue.destination as! InfoController
             vc.name = searchText.lowercased()
@@ -157,7 +157,6 @@ extension HomeController: UISearchBarDelegate {
         if let text = searchBar.text {
             searchText = text
             performSegue(withIdentifier: "showSearch", sender: nil)
-            print("Hello")
         }
         
     }
