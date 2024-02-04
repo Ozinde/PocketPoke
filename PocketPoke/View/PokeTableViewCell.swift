@@ -9,6 +9,7 @@ import UIKit
 
 class PokeTableViewCell: UITableViewCell {
 
+    /// Outlets
     @IBOutlet weak var pokemonName: UILabel!
     @IBOutlet var pokemonImage: UIImageView!
     
@@ -16,12 +17,6 @@ class PokeTableViewCell: UITableViewCell {
         if let data = data {
             let image = UIImage(data: data)
             pokemonImage.image = image
-        }
-    }
-    
-    func setupText(row: Int) {
-        if row % 4 == 0 {
-            pokemonName.textColor = .red
         }
     }
 

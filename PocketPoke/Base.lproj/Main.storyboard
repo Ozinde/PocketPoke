@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="npR-1m-Kn6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e9E-Pv-i9B">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
@@ -110,7 +110,7 @@
                                 <rect key="frame" x="0.0" y="370.33333333333326" width="393" height="447.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InfoCell" rowHeight="80" id="ueS-aK-Gkx" customClass="InfoViewCell" customModule="PocketPoke" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InfoCell" rowHeight="80" id="ueS-aK-Gkx" customClass="InfoViewCell" customModule="PocketPoke" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ueS-aK-Gkx" id="6pN-RH-FIo">
@@ -185,7 +185,7 @@
         <!--Home-->
         <scene sceneID="pSK-Mm-98j">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="npR-1m-Kn6" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavController" automaticallyAdjustsScrollViewInsets="NO" id="npR-1m-Kn6" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" id="8LG-6O-f5y">
                         <color key="badgeColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <imageReference key="selectedImage" image="house.fill" catalog="system" renderingMode="original"/>
@@ -212,6 +212,55 @@
             </objects>
             <point key="canvasLocation" x="160" y="4"/>
         </scene>
+        <!--Splash Controller-->
+        <scene sceneID="Oq6-yf-9hg">
+            <objects>
+                <viewController id="e9E-Pv-i9B" customClass="SplashController" customModule="PocketPoke" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="csh-xv-ZMr">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="Tzp-p6-cOl">
+                                <rect key="frame" x="96.666666666666686" y="326" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="LSB-T9-g4r"/>
+                                    <constraint firstAttribute="width" constant="200" id="ipT-1u-8th"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pocket" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWb-k0-pGB">
+                                <rect key="frame" x="116.33333333333333" y="586" width="160.33333333333337" height="56.333333333333371"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="48"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Poke!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdF-wx-gPg">
+                                <rect key="frame" x="142" y="650.33333333333337" width="109.33333333333331" height="58.666666666666629"/>
+                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="48"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="q7q-YK-tmg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ZWb-k0-pGB" firstAttribute="top" secondItem="Tzp-p6-cOl" secondAttribute="bottom" constant="60" id="5CI-uO-cNx"/>
+                            <constraint firstItem="WdF-wx-gPg" firstAttribute="top" secondItem="ZWb-k0-pGB" secondAttribute="bottom" constant="8" id="UFd-Tx-5mB"/>
+                            <constraint firstItem="Tzp-p6-cOl" firstAttribute="centerY" secondItem="csh-xv-ZMr" secondAttribute="centerY" id="bcx-PD-R5d"/>
+                            <constraint firstItem="Tzp-p6-cOl" firstAttribute="centerX" secondItem="csh-xv-ZMr" secondAttribute="centerX" id="m96-H1-Yl1"/>
+                            <constraint firstItem="ZWb-k0-pGB" firstAttribute="centerX" secondItem="csh-xv-ZMr" secondAttribute="centerX" id="v7M-SW-Gg2"/>
+                            <constraint firstItem="WdF-wx-gPg" firstAttribute="centerX" secondItem="csh-xv-ZMr" secondAttribute="centerX" id="v9F-3F-uzR"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="pocketLabel" destination="ZWb-k0-pGB" id="InA-bi-2fR"/>
+                        <outlet property="pokeLabel" destination="WdF-wx-gPg" id="80i-Np-6oO"/>
+                        <outlet property="pokemonImage" destination="Tzp-p6-cOl" id="IGa-cz-MhC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bac-Ej-NmU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-604" y="4"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="PtO-Bh-mcg"/>
@@ -219,6 +268,7 @@
     <resources>
         <image name="house" catalog="system" width="128" height="104"/>
         <image name="house.fill" catalog="system" width="128" height="104"/>
+        <image name="launch" width="48" height="48"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

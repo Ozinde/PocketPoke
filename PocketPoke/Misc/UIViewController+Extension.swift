@@ -10,7 +10,7 @@ import Network
 
 extension UIViewController {
     
-    //Alert controller displayed to confirmation student post override.
+    /// Alert controller displayed to confirmation student post override.
     func showAlert(message: String) {
         let controller = UIAlertController(title: "Something Went Wrong", message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default)
@@ -20,6 +20,7 @@ extension UIViewController {
         self.present(controller, animated: true, completion: nil)
     }
     
+    /// Function that monitors the network
     func monitorNetwork() {
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = {
@@ -38,6 +39,7 @@ extension UIViewController {
         monitor.start(queue: queue)
     }
     
+    /// Function that provides vibration on button clicks
     func openVibe() {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
@@ -46,6 +48,7 @@ extension UIViewController {
 
 extension String {
     
+    /// Adds functionality to the String data type
     func contains(find: String) -> Bool{
         return self.range(of: find) != nil
     }

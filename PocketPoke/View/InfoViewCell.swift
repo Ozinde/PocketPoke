@@ -9,6 +9,7 @@ import UIKit
 
 class InfoViewCell: UITableViewCell {
 
+    /// Outlets
     @IBOutlet weak var statName: UILabel!
     @IBOutlet weak var statNumber: UILabel!
 

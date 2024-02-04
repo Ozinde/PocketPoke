@@ -40,6 +40,7 @@ class PokemonClient {
         }
     }
     
+    /// Function used to obtain pokemon names and pagination parameters
     class func loadPokemon(limit: String, completion: @escaping (PokeList?, Error?) -> Void) {
         
         let request = URLRequest(url: EndPoints.loadPokemonList(limit).url)
@@ -66,6 +67,7 @@ class PokemonClient {
         task.resume()
     }
     
+    /// Function that provides pokemon name and image
     class func getPokeImage(name: String, completion: @escaping (Pokemon?, Error?) -> Void) {
         
         let request = URLRequest(url: EndPoints.searchByName(name).url)
@@ -92,6 +94,7 @@ class PokemonClient {
         task.resume()
     }
     
+    /// Function used to return searched name information
     class func searchPokemon(name: String, completion: @escaping (Pokemon?, Error?) -> Void) -> URLSessionDataTask {
         
         let request = URLRequest(url: EndPoints.searchByName(name).url)
@@ -120,6 +123,7 @@ class PokemonClient {
         return task
     }
     
+    /// Function that uses image bytes to produce image for display
     class func requestImageFile(url: URL, completionHandler: @escaping (Data?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
             guard let data = data else {
@@ -132,6 +136,7 @@ class PokemonClient {
         task.resume()
     }
     
+    /// Function used to retrieve pokemon stats
     class func loadPokeInfo(name: String, completion: @escaping (PokeInfo?, Error?) -> Void) {
         
         let request = URLRequest(url: EndPoints.searchByName(name).url)

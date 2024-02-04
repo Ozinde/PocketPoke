@@ -23,6 +23,7 @@
 		E282B4592B6D91410062F454 /* PokeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282B4582B6D91410062F454 /* PokeList.swift */; };
 		E29098A92B7003F000B27478 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29098A82B7003F000B27478 /* Stats.swift */; };
 		E29098AB2B700BA600B27478 /* InfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29098AA2B700BA600B27478 /* InfoViewCell.swift */; };
+		E29098AD2B70323D00B27478 /* SplashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29098AC2B70323D00B27478 /* SplashController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		E282B4582B6D91410062F454 /* PokeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeList.swift; sourceTree = "<group>"; };
 		E29098A82B7003F000B27478 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
 		E29098AA2B700BA600B27478 /* InfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewCell.swift; sourceTree = "<group>"; };
+		E29098AC2B70323D00B27478 /* SplashController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			children = (
 				E282B4462B6D66500062F454 /* HomeController.swift */,
 				E282B44B2B6D7B390062F454 /* InfoController.swift */,
+				E29098AC2B70323D00B27478 /* SplashController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				E282B4352B6D64970062F454 /* SceneDelegate.swift in Sources */,
 				E282B44C2B6D7B390062F454 /* InfoController.swift in Sources */,
 				E20E699A2B6F793B00C754B0 /* PokeTableViewCell.swift in Sources */,
+				E29098AD2B70323D00B27478 /* SplashController.swift in Sources */,
 				E282B4532B6D818B0062F454 /* Pokemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

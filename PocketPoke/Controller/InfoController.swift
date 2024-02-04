@@ -9,22 +9,26 @@ import UIKit
 
 class InfoController: UIViewController {
     
+    /// Variables
     var name = String()
     var pokeImage: Data?
     var pokeStats = [Stats]()
     var searchCheck = true
     
+    /// Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pokemonName: UILabel!
     @IBOutlet var pokemonImage: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: Lifecycle Functions
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         monitorNetwork()
         loading(isLoading: true)
-
+        
         tableView.dataSource = self
         
         if searchCheck == false {
@@ -40,7 +44,10 @@ class InfoController: UIViewController {
         fetchPokeInfo()
     }
     
-    func fetchPokeInfo() {
+    // MARK: Functions
+    
+    /// Fetch Pokemon stats and image in search case
+    fileprivate func fetchPokeInfo() {
         PokemonClient.loadPokeInfo(name: name) { info, error in
             
             guard let info = info else {
@@ -65,7 +72,8 @@ class InfoController: UIViewController {
         }
     }
     
-    func noResult() {
+    /// Handles no result state
+    fileprivate func noResult() {
         
         DispatchQueue.main.async {
             self.loading(isLoading: false)
@@ -76,7 +84,8 @@ class InfoController: UIViewController {
         
     }
     
-    func loading(isLoading: Bool) {
+    /// Function used to control state of activity indicator
+    fileprivate func loading(isLoading: Bool) {
         if isLoading {
             DispatchQueue.main.async {
                 self.tableView.isHidden = true
@@ -93,7 +102,8 @@ class InfoController: UIViewController {
         }
     }
     
-    func handleImageProcessing(imageURL: String) {
+    /// Function that uses image URL to download image bytes
+    fileprivate func handleImageProcessing(imageURL: String) {
         guard let imageURL = URL(string: imageURL) else {
             print("No image data")
             showAlert(message: "Couldn't load image")
@@ -114,12 +124,16 @@ class InfoController: UIViewController {
 
 }
 
+// MARK: TableView Methods
+
 extension InfoController: UITableViewDataSource {
     
+    /// Determine number of items table view should display
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pokeStats.count
     }
     
+    /// Configure each table view cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell") as! InfoViewCell
         
