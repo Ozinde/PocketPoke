@@ -18,5 +18,11 @@ class PokeTableViewCell: UITableViewCell {
             pokemonImage.image = image
         }
     }
+    
+    func setupText(row: Int) {
+        if row % 4 == 0 {
+            pokemonName.textColor = .red
+        }
+    }
 
 }

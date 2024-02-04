@@ -12,10 +12,13 @@ class HomeController: UIViewController {
     var pokemon = [Pokemon]()
     var pokeItems = [PokeListItem]()
     var nextPage = String()
+    var searchText = String()
     var currentPage = 0
     var totalPages = 1
+    var selectedIndex = 0
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +26,9 @@ class HomeController: UIViewController {
         monitorNetwork()
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
         
-        loadListItems(requestString: "?limit=8")
+        loadListItems(requestString: "?limit=10")
     }
     
     func loadData(requestString: String) {
@@ -37,7 +41,7 @@ class HomeController: UIViewController {
     func handleImageProcessing(name: String, imageURL: String, error: Error?) {
         guard let imageURL = URL(string: imageURL) else {
             print(error?.localizedDescription ?? "No image data")
-            showFailure(message: error?.localizedDescription ?? "")
+            showAlert(message: error?.localizedDescription ?? "")
             return
         }
         PokemonClient.requestImageFile(url: imageURL) { data, error in
@@ -92,8 +96,6 @@ class HomeController: UIViewController {
 
 }
 
-
-
 extension HomeController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -116,16 +118,61 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == pokeItems.count - 1, currentPage < totalPages, pokeItems.count < 40 {
+        
+        if indexPath.row == pokeItems.count - 1, currentPage < totalPages, pokeItems.count < 100, !nextPage.contains(find: "100") {
             loadData(requestString: nextPage)
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        selectedIndex = indexPath.row
+        selectedIndex = indexPath.row
         performSegue(withIdentifier: "showInfo", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "showInfo":
+            //Get the item associated with this row and pass it along
+            let pokemon = pokeItems[selectedIndex]
+            let vc = segue.destination as! InfoController
+            vc.name = pokemon.name
+            vc.pokeImage = pokemon.image
+        case "showSearch":
+            let vc = segue.destination as! InfoController
+            vc.name = searchText.lowercased()
+            
+        default:
+            print("Unexpected segue identifier")
+            showAlert(message: "Please restart your app")
+        }
+    }
 
+
+}
+
+extension HomeController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let text = searchBar.text {
+            searchText = text
+            performSegue(withIdentifier: "showSearch", sender: nil)
+            print("Hello")
+        }
+        
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+    
 }
 

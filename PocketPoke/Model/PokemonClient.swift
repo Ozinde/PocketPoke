@@ -132,13 +132,13 @@ class PokemonClient {
         task.resume()
     }
     
-    class func loadPokeInfo(name: String, completion: @escaping ([PokeInfo], Error?) -> Void) {
+    class func loadPokeInfo(name: String, completion: @escaping (PokeInfo?, Error?) -> Void) {
         
         let request = URLRequest(url: EndPoints.searchByName(name).url)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
-                completion([], RequestErrors.couldNotGetPokemon)
+                completion(nil, RequestErrors.couldNotGetPokemon)
                 print("No items")
                 return
             }
@@ -146,11 +146,11 @@ class PokemonClient {
             let decoder = JSONDecoder()
             do {
                 print("Info Found")
-                let responseObject = try decoder.decode([PokeInfo].self, from: data)
+                let responseObject = try decoder.decode(PokeInfo.self, from: data)
                 completion(responseObject, nil)
                 
             } catch {
-                completion([], RequestErrors.couldNotGetPokemonResults)
+                completion(nil, RequestErrors.couldNotGetPokemonResults)
                 print("Error getting results")
                 print(RequestErrors.couldNotGetPokemonResults)
             }
