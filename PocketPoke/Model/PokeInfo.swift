@@ -13,10 +13,10 @@ struct PokeInfo: Codable {
 }
 
 struct PokeStats: Codable {
-    let health: Int
+    let base: Int
     
     enum CodingKeys: String, CodingKey {
-        case health = "base_stat"
+        case base = "base_stat"
     }
     
 }

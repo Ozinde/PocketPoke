@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E20E69982B6EA9BC00C754B0 /* PokeListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E69972B6EA9BC00C754B0 /* PokeListItem.swift */; };
 		E282B4332B6D64970062F454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282B4322B6D64970062F454 /* AppDelegate.swift */; };
 		E282B4352B6D64970062F454 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282B4342B6D64970062F454 /* SceneDelegate.swift */; };
 		E282B43A2B6D64970062F454 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E282B4382B6D64970062F454 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E20E69972B6EA9BC00C754B0 /* PokeListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeListItem.swift; sourceTree = "<group>"; };
 		E282B42F2B6D64970062F454 /* PocketPoke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketPoke.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E282B4322B6D64970062F454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E282B4342B6D64970062F454 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				E282B4562B6D8D970062F454 /* PokeInfo.swift */,
 				E282B4582B6D91410062F454 /* PokeList.swift */,
 				E282B4542B6D83210062F454 /* PokemonClient.swift */,
+				E20E69972B6EA9BC00C754B0 /* PokeListItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E20E69982B6EA9BC00C754B0 /* PokeListItem.swift in Sources */,
 				E282B4502B6D7E380062F454 /* UIViewController+Extension.swift in Sources */,
 				E282B4472B6D66500062F454 /* HomeController.swift in Sources */,
 				E282B4592B6D91410062F454 /* PokeList.swift in Sources */,

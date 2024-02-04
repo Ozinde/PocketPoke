@@ -9,28 +9,23 @@ import Foundation
 
 struct Pokemon: Codable {
     
+    let name : String
     let image: PokeImage
-    let name : Species
     
     enum CodingKeys: String, CodingKey {
+        case name
         case image = "sprites"
-        case name = "species"
     }
     
 }
 
 struct PokeImage: Codable {
     
-    let image: String
+    let imageURL: String
     
     enum CodingKeys: String, CodingKey {
-        case image = "front_shiny"
+        case imageURL = "front_shiny"
     }
-}
-
-struct Species: Codable {
-    
-    let name: String
 }
 
 

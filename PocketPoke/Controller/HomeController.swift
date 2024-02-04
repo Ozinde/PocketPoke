@@ -10,6 +10,7 @@ import UIKit
 class HomeController: UIViewController {
     
     var pokemon = [Pokemon]()
+    var pokeItems = [PokeListItem]()
     var selectedIndex = 0
     var filterNumber = Int()
     var currentSearchTask: URLSessionDataTask?
@@ -20,11 +21,54 @@ class HomeController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        PokemonClient.loadPokemon { pokeList, error in
+            
+            guard let pokeList = pokeList else {
+                print("Error: \(error!)")
+                return
+            }
+            
+            for item in pokeList.results {
+                PokemonClient.getPokeImage(name: item.name) { pokemon, error in
+                    guard let pokemon = pokemon else {
+                        print("Error: \(error!)")
+                        return
+                    }
+
+                    print("A")
+                    self.handleImageProcessing(name: item.name, imageURL: pokemon.image.imageURL, error: error)
+                }
+            }
+            
+        }
 
         monitorNetwork()
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+    }
+    
+    func handleImageProcessing(name: String, imageURL: String, error: Error?) {
+        guard let imageURL = URL(string: imageURL) else {
+            print(error?.localizedDescription ?? "No image data")
+            showFailure(message: error?.localizedDescription ?? "")
+            return
+        }
+        PokemonClient.requestImageFile(url: imageURL) { data, error in
+            guard let data = data else {
+                return
+            }
+            
+            let item = PokeListItem(name: name, image: data)
+            self.pokeItems.append(item)
+            
+            print("items: \(self.pokeItems.count)")
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func loading(isLoading: Bool) {
@@ -53,10 +97,14 @@ extension HomeController: UISearchBarDelegate {
         print("text change")
         currentSearchTask?.cancel()
         
-        print("No drink filter applied")
-        currentSearchTask = PokemonClient.searchByName(name: searchText) { [weak self] list, error in
+        currentSearchTask = PokemonClient.searchPokemon(name: searchText, completion: { [weak self] nameText, error in
             
-            if list.isEmpty {
+            guard let nameText = nameText else {
+                print("Error: \(error!)")
+                return
+            }
+            
+            if nameText.results.isEmpty {
                 if searchText.isEmpty {
                     self?.loading(isLoading: false)
                 } else {
@@ -67,12 +115,17 @@ extension HomeController: UISearchBarDelegate {
                 self?.loading(isLoading: false)
             }
             
-            self?.pokemon = list
+            for item in nameText.results {
+                
+                let pokemon = PokeListItem(name: item.name, image: nil)
+                self?.pokeItems.append(pokemon)
+            }
+            
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
             
-        }
+        })
         
     }
     
@@ -97,22 +150,23 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemon.count
+        return pokeItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkTableViewCell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell")!
         
-        let pokemon = pokemon[indexPath.row]
+        let pokemon = pokeItems[indexPath.row]
         
-        cell.textLabel?.text = pokemon.name.name
+        cell.textLabel?.text = pokemon.name
+        cell.imageView?.image = UIImage(data: pokemon.image!)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndex = indexPath.row
-        performSegue(withIdentifier: "showResult", sender: nil)
+        performSegue(withIdentifier: "showInfo", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

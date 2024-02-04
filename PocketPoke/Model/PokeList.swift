@@ -10,7 +10,7 @@ import Foundation
 struct PokeList: Codable {
     
     let next: String
-    let resultst: [PokeItems]
+    let results: [PokeItems]
 }
 
 struct PokeItems: Codable {

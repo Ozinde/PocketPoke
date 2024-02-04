@@ -25,6 +25,15 @@ extension UIViewController {
         self.present(controller, animated: true, completion: nil)
     }
     
+    func showFailure(message: String) {
+        DispatchQueue.main.async {
+            let alertVC = UIAlertController(title: "Error Occured", message: message, preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alertVC.popoverPresentationController?.sourceView = self.view
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
+    
     func monitorNetwork() {
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = {
