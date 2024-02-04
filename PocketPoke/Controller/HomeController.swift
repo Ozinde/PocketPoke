@@ -11,42 +11,27 @@ class HomeController: UIViewController {
     
     var pokemon = [Pokemon]()
     var pokeItems = [PokeListItem]()
-    var selectedIndex = 0
-    var filterNumber = Int()
-    var currentSearchTask: URLSessionDataTask?
+    var nextPage = String()
+    var currentPage = 0
+    var totalPages = 1
     
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        PokemonClient.loadPokemon { pokeList, error in
-            
-            guard let pokeList = pokeList else {
-                print("Error: \(error!)")
-                return
-            }
-            
-            for item in pokeList.results {
-                PokemonClient.getPokeImage(name: item.name) { pokemon, error in
-                    guard let pokemon = pokemon else {
-                        print("Error: \(error!)")
-                        return
-                    }
-
-                    print("A")
-                    self.handleImageProcessing(name: item.name, imageURL: pokemon.image.imageURL, error: error)
-                }
-            }
-            
-        }
 
         monitorNetwork()
         tableView.delegate = self
         tableView.dataSource = self
-        searchBar.delegate = self
+        
+        loadListItems(requestString: "?limit=8")
+    }
+    
+    func loadData(requestString: String) {
+        // Make network call to fetch data for currentPage
+        currentPage += 1
+        totalPages += 1
+        loadListItems(requestString: requestString)
     }
     
     func handleImageProcessing(name: String, imageURL: String, error: Error?) {
@@ -71,77 +56,43 @@ class HomeController: UIViewController {
         }
     }
     
-    func loading(isLoading: Bool) {
-        if isLoading {
-            DispatchQueue.main.async {
-                self.tableView.isHidden = true
-                self.activityIndicator.isHidden = false
-                self.activityIndicator.startAnimating()
-            }
+    func loadListItems(requestString: String) {
+        PokemonClient.loadPokemon(limit: requestString) { pokeList, error in
             
-        } else {
-            DispatchQueue.main.async {
-                self.tableView.isHidden = false
-                self.activityIndicator.isHidden = true
-                self.activityIndicator.stopAnimating()
-            }
-        }
-    }
-    
-
-}
-
-extension HomeController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("text change")
-        currentSearchTask?.cancel()
-        
-        currentSearchTask = PokemonClient.searchPokemon(name: searchText, completion: { [weak self] nameText, error in
-            
-            guard let nameText = nameText else {
+            guard let pokeList = pokeList else {
                 print("Error: \(error!)")
                 return
             }
             
-            if nameText.results.isEmpty {
-                if searchText.isEmpty {
-                    self?.loading(isLoading: false)
-                } else {
-                    self?.loading(isLoading: true)
+            self.nextPage = self.limitString(url: pokeList.next)
+            print("Page: \(self.nextPage)")
+            
+            for item in pokeList.results {
+                PokemonClient.getPokeImage(name: item.name) { pokemon, error in
+                    guard let pokemon = pokemon else {
+                        print("Error: \(error!)")
+                        return
+                    }
+                    
+                    self.handleImageProcessing(name: item.name, imageURL: pokemon.image.imageURL, error: error)
                 }
-                
-            } else {
-                self?.loading(isLoading: false)
             }
-            
-            for item in nameText.results {
-                
-                let pokemon = PokeListItem(name: item.name, image: nil)
-                self?.pokeItems.append(pokemon)
-            }
-            
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
-            
-        })
-        
+        }
     }
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
+    func limitString(url: String) -> String {
+        let start = url.startIndex
+        let limit = url.index(start, offsetBy: 34)
+        let end = url.index(before: url.endIndex)
+        let range = limit...end
+        let finalString = url[range]
+        return String(finalString)
     }
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = false
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.endEditing(true)
-    }
-    
+
 }
+
+
 
 extension HomeController: UITableViewDataSource, UITableViewDelegate {
     
@@ -164,11 +115,17 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == pokeItems.count - 1, currentPage < totalPages, pokeItems.count < 40 {
+            loadData(requestString: nextPage)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedIndex = indexPath.row
+//        selectedIndex = indexPath.row
         performSegue(withIdentifier: "showInfo", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
 }
 

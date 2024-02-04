@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ESZ-WW-8ca">
-                                <rect key="frame" x="8" y="167" width="377" height="598"/>
+                                <rect key="frame" x="8" y="111" width="377" height="707"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TableViewCell" rowHeight="80" id="k26-IO-mFN" customClass="PokeTableViewCell" customModule="PocketPoke" customModuleProvider="target">
@@ -56,36 +57,18 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <searchBar contentMode="redraw" placeholder="Search Pokémon..." translatesAutoresizingMaskIntoConstraints="NO" id="lwi-5I-Vy3">
-                                <rect key="frame" x="0.0" y="103" width="393" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="8fn-ty-bbQ"/>
-                                </connections>
-                            </searchBar>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="AcW-sQ-8ba">
-                                <rect key="frame" x="178" y="773" width="37" height="37"/>
-                                <color key="color" systemColor="systemRedColor"/>
-                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="lwi-5I-Vy3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4UT-xJ-bT4"/>
-                            <constraint firstItem="lwi-5I-Vy3" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="EPp-Kj-vlk"/>
-                            <constraint firstItem="AcW-sQ-8ba" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="J4G-tm-CIh"/>
-                            <constraint firstItem="ESZ-WW-8ca" firstAttribute="top" secondItem="lwi-5I-Vy3" secondAttribute="bottom" constant="8" id="Qpy-X6-Ikf"/>
-                            <constraint firstAttribute="trailing" secondItem="lwi-5I-Vy3" secondAttribute="trailing" id="SMT-gp-U4x"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="AcW-sQ-8ba" secondAttribute="bottom" constant="8" id="eGe-j9-bUD"/>
+                            <constraint firstItem="ESZ-WW-8ca" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="dRr-TZ-NTU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ESZ-WW-8ca" secondAttribute="bottom" id="oS8-t2-TPm"/>
                             <constraint firstItem="ESZ-WW-8ca" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="ogd-nw-JS7"/>
-                            <constraint firstItem="AcW-sQ-8ba" firstAttribute="top" secondItem="ESZ-WW-8ca" secondAttribute="bottom" constant="8" id="pNc-0P-hha"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ESZ-WW-8ca" secondAttribute="trailing" constant="8" id="rPH-ea-jsh"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Codex" largeTitleDisplayMode="always" id="81g-Zr-W5u"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="AcW-sQ-8ba" id="OiD-Dt-gPq"/>
-                        <outlet property="searchBar" destination="lwi-5I-Vy3" id="dB0-hQ-4js"/>
                         <outlet property="tableView" destination="ESZ-WW-8ca" id="qVC-0P-SY8"/>
                     </connections>
                 </viewController>
@@ -93,10 +76,14 @@
             </objects>
             <point key="canvasLocation" x="962.59541984732823" y="3.5211267605633805"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Home-->
         <scene sceneID="pSK-Mm-98j">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="npR-1m-Kn6" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" id="8LG-6O-f5y">
+                        <color key="badgeColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <imageReference key="selectedImage" image="house.fill" catalog="system" renderingMode="original"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="9oz-ad-SeB">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>
@@ -113,11 +100,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="house" catalog="system" width="128" height="104"/>
+        <image name="house.fill" catalog="system" width="128" height="104"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

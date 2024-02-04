@@ -24,14 +24,14 @@ class PokemonClient {
         static let base = "https://pokeapi.co/api/v2/pokemon/"
         
         case searchByName(String)
-        case loadPokemonList
+        case loadPokemonList(String)
         
         var stringValue: String {
             switch self {
             case .searchByName(let name):
                 return EndPoints.base + "\(name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
-            case .loadPokemonList:
-                return EndPoints.base + "?limit=2"
+            case .loadPokemonList(let limit):
+                return EndPoints.base + "\(limit)"
             }
         }
         
@@ -40,9 +40,9 @@ class PokemonClient {
         }
     }
     
-    class func loadPokemon(completion: @escaping (PokeList?, Error?) -> Void) {
+    class func loadPokemon(limit: String, completion: @escaping (PokeList?, Error?) -> Void) {
         
-        let request = URLRequest(url: EndPoints.loadPokemonList.url)
+        let request = URLRequest(url: EndPoints.loadPokemonList(limit).url)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
@@ -53,7 +53,6 @@ class PokemonClient {
             
             let decoder = JSONDecoder()
             do {
-                print("Load went well")
                 let responseObject = try decoder.decode(PokeList.self, from: data)
                 completion(responseObject, nil)
                 
@@ -80,7 +79,6 @@ class PokemonClient {
             
             let decoder = JSONDecoder()
             do {
-                print("Search went well")
                 let responseObject = try decoder.decode(Pokemon?.self, from: data)
                 completion(responseObject, nil)
                 
@@ -94,7 +92,7 @@ class PokemonClient {
         task.resume()
     }
     
-    class func searchPokemon(name: String, completion: @escaping (PokeList?, Error?) -> Void) -> URLSessionDataTask {
+    class func searchPokemon(name: String, completion: @escaping (Pokemon?, Error?) -> Void) -> URLSessionDataTask {
         
         let request = URLRequest(url: EndPoints.searchByName(name).url)
         
@@ -108,7 +106,7 @@ class PokemonClient {
             let decoder = JSONDecoder()
             do {
                 print("Load went well")
-                let responseObject = try decoder.decode(PokeList.self, from: data)
+                let responseObject = try decoder.decode(Pokemon.self, from: data)
                 completion(responseObject, nil)
                 
             } catch {

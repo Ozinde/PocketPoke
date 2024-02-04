@@ -109,8 +109,8 @@
 				E282B4522B6D818B0062F454 /* Pokemon.swift */,
 				E282B4562B6D8D970062F454 /* PokeInfo.swift */,
 				E282B4582B6D91410062F454 /* PokeList.swift */,
-				E282B4542B6D83210062F454 /* PokemonClient.swift */,
 				E20E69972B6EA9BC00C754B0 /* PokeListItem.swift */,
+				E282B4542B6D83210062F454 /* PokemonClient.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
