@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E20E69982B6EA9BC00C754B0 /* PokeListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E69972B6EA9BC00C754B0 /* PokeListItem.swift */; };
+		E20E699A2B6F793B00C754B0 /* PokeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E69992B6F793B00C754B0 /* PokeTableViewCell.swift */; };
 		E282B4332B6D64970062F454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282B4322B6D64970062F454 /* AppDelegate.swift */; };
 		E282B4352B6D64970062F454 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282B4342B6D64970062F454 /* SceneDelegate.swift */; };
 		E282B43A2B6D64970062F454 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E282B4382B6D64970062F454 /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		E20E69972B6EA9BC00C754B0 /* PokeListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeListItem.swift; sourceTree = "<group>"; };
+		E20E69992B6F793B00C754B0 /* PokeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeTableViewCell.swift; sourceTree = "<group>"; };
 		E282B42F2B6D64970062F454 /* PocketPoke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketPoke.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E282B4322B6D64970062F454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E282B4342B6D64970062F454 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 		E282B4492B6D66760062F454 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E20E69992B6F793B00C754B0 /* PokeTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				E282B4572B6D8D980062F454 /* PokeInfo.swift in Sources */,
 				E282B4352B6D64970062F454 /* SceneDelegate.swift in Sources */,
 				E282B44C2B6D7B390062F454 /* InfoController.swift in Sources */,
+				E20E699A2B6F793B00C754B0 /* PokeTableViewCell.swift in Sources */,
 				E282B4532B6D818B0062F454 /* Pokemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

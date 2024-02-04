@@ -154,12 +154,12 @@ extension HomeController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! PokeTableViewCell
         
         let pokemon = pokeItems[indexPath.row]
         
-        cell.textLabel?.text = pokemon.name
-        cell.imageView?.image = UIImage(data: pokemon.image!)
+        cell.pokemonName.text = pokemon.name
+        cell.setupImage(data: pokemon.image)
         
         return cell
     }
