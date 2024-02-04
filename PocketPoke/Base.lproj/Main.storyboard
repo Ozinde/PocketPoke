@@ -60,6 +60,7 @@
                             </tableView>
                             <searchBar contentMode="redraw" placeholder="Search Pokemon Name..." translatesAutoresizingMaskIntoConstraints="NO" id="YOG-t5-LQW">
                                 <rect key="frame" x="0.0" y="103" width="393" height="56"/>
+                                <color key="tintColor" name="label_red"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="55U-rG-Vx3"/>
