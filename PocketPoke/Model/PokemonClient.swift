@@ -16,6 +16,7 @@ class PokemonClient {
         case couldNotGetSearchData
         case couldNotFindSearchedResult
         case couldNotGetImageData
+        case invalidURL
     }
     
     //Enum that holds various API endpoints
@@ -35,42 +36,39 @@ class PokemonClient {
             }
         }
         
-        var url: URL {
+        var url: URL? {
             return URL(string: stringValue)!
         }
     }
     
     /// Function used to obtain pokemon names and pagination parameters
-    class func loadPokemon(limit: String, completion: @escaping (PokeList?, Error?) -> Void) {
+    class func loadPokemon(limit: String) async throws -> PokeList {
         
-        let request = URLRequest(url: EndPoints.loadPokemonList(limit).url)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                completion(nil, RequestErrors.couldNotGetPokemon)
-                print("No items")
-                return
-            }
-            
-            let decoder = JSONDecoder()
-            do {
-                let responseObject = try decoder.decode(PokeList.self, from: data)
-                completion(responseObject, nil)
-                
-            } catch {
-                completion(nil, RequestErrors.couldNotGetPokemonResults)
-                print("Error getting pokemon list")
-                print("Error: \(error)")
-                print(RequestErrors.couldNotGetPokemonResults)
-            }
+        guard let request = EndPoints.loadPokemonList(limit).url else {
+            throw RequestErrors.invalidURL
         }
-        task.resume()
+        
+        //URL is used to make a network request
+        let (data, response) = try await URLSession.shared.data(from: request)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw RequestErrors.couldNotGetPokemon
+        }
+        
+        do {
+            // Data from the API is made available here
+            let decoder = JSONDecoder()
+            return try decoder.decode(PokeList.self, from: data)
+        } catch {
+            print("Error parsing weather data")
+            throw RequestErrors.couldNotGetPokemonResults
+        }
     }
     
     /// Function that provides pokemon name and image
     class func getPokeImage(name: String, completion: @escaping (Pokemon?, Error?) -> Void) {
         
-        let request = URLRequest(url: EndPoints.searchByName(name).url)
+        let request = URLRequest(url: EndPoints.searchByName(name).url!)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
@@ -94,35 +92,6 @@ class PokemonClient {
         task.resume()
     }
     
-    /// Function used to return searched name information
-    class func searchPokemon(name: String, completion: @escaping (Pokemon?, Error?) -> Void) -> URLSessionDataTask {
-        
-        let request = URLRequest(url: EndPoints.searchByName(name).url)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                completion(nil, RequestErrors.couldNotGetPokemon)
-                print("No items")
-                return
-            }
-            
-            let decoder = JSONDecoder()
-            do {
-                print("Load went well")
-                let responseObject = try decoder.decode(Pokemon.self, from: data)
-                completion(responseObject, nil)
-                
-            } catch {
-                completion(nil, RequestErrors.couldNotGetPokemonResults)
-                print("Error getting pokemon list")
-                print("Error: \(error)")
-                print(RequestErrors.couldNotGetPokemonResults)
-            }
-        }
-        task.resume()
-        return task
-    }
-    
     /// Function that uses image bytes to produce image for display
     class func requestImageFile(url: URL, completionHandler: @escaping (Data?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
@@ -139,7 +108,7 @@ class PokemonClient {
     /// Function used to retrieve pokemon stats
     class func loadPokeInfo(name: String, completion: @escaping (PokeInfo?, Error?) -> Void) {
         
-        let request = URLRequest(url: EndPoints.searchByName(name).url)
+        let request = URLRequest(url: EndPoints.searchByName(name).url!)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {

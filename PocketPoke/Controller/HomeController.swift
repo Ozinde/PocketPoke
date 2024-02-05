@@ -47,29 +47,45 @@ class HomeController: UIViewController {
     
     /// Function that fetches pokemon list items
     fileprivate func loadListItems(requestString: String) {
-        PokemonClient.loadPokemon(limit: requestString) { pokeList, error in
-            
-            guard let pokeList = pokeList else {
-                print("Error with list items")
-                return
-            }
-            
-            self.nextPage = self.limitString(url: pokeList.next)
-            print("Page: \(self.nextPage)")
-            
-            for item in pokeList.results {
-                PokemonClient.getPokeImage(name: item.name) { pokemon, error in
-                    guard let pokemon = pokemon else {
-                        print("Error with item names")
-                        return
-                    }
-                    
-                    self.handleImageProcessing(name: item.name, imageURL: pokemon.image.imageURL, error: error)
+        
+        Task {
+            do {
+                var pokeList: PokeList?
+                pokeList = try await PokemonClient.loadPokemon(limit: requestString)
+                
+                guard let pokeList = pokeList else {
+                    print("Error with list items")
+                    return
                 }
+                
+                self.nextPage = self.limitString(url: pokeList.next)
+                print("Page: \(self.nextPage)")
+                
+                for item in pokeList.results {
+                    PokemonClient.getPokeImage(name: item.name) { pokemon, error in
+                        guard let pokemon = pokemon else {
+                            print("Error with item names")
+                            return
+                        }
+                        
+                        self.handleImageProcessing(name: item.name, imageURL: pokemon.image.imageURL, error: error)
+                    }
+                }
+              
+                // Catch block
+            } catch PokemonClient.RequestErrors.invalidURL {
+                showAlert(message: "An incorrect URL was used.")
+            } catch PokemonClient.RequestErrors.couldNotGetPokemon {
+                showAlert(message: "Weather information could not be found.")
+            } catch PokemonClient.RequestErrors.couldNotGetPokemonResults {
+                showAlert(message: "Weather information unavailable.")
+            } catch {
+                showAlert(message: "An unknown error occured.")
             }
         }
     }
     
+    @MainActor
     /// Function that uses image URL to download image bytes
     fileprivate func handleImageProcessing(name: String, imageURL: String, error: Error?) {
         guard let imageURL = URL(string: imageURL) else {
